@@ -33,4 +33,16 @@ describe("Unit test create product use case", () => {
       useCase.execute({ type: "unsupported", name: "Product", price: 100 }),
     ).rejects.toThrow("Product type not supported");
   });
+
+  it("should report validation errors and not create an invalid product", async () => {
+    const productRepository = MockRepository();
+    const useCase = new CreateProductUseCase(productRepository);
+
+    await expect(
+      useCase.execute({ type: "a", name: "", price: -1 })
+    ).rejects.toThrow(
+      "product: Name is required,product: Price must be greater than or equal to zero"
+    );
+    expect(productRepository.create).not.toHaveBeenCalled();
+  });
 });

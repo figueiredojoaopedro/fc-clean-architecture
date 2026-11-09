@@ -28,4 +28,20 @@ describe("Unit test update product use case", () => {
     });
     expect(productRepository.update).toHaveBeenCalledWith(product);
   });
+
+  it("should report validation errors and not update an invalid product", async () => {
+    const productRepository = MockRepository();
+    const useCase = new UpdateProductUseCase(productRepository);
+
+    await expect(
+      useCase.execute({
+        id: product.id,
+        name: product.name,
+        price: -1,
+      })
+    ).rejects.toThrow(
+      "product: Price must be greater than or equal to zero"
+    );
+    expect(productRepository.update).not.toHaveBeenCalled();
+  });
 });
