@@ -2,9 +2,7 @@ import * as yup from "yup";
 import ValidatorInterface from "../../@shared/validator/validator.interface";
 import ProductInterface from "../entity/product.interface";
 
-export default class ProductYupValidator
-  implements ValidatorInterface<ProductInterface>
-{
+export default class ProductYupValidator implements ValidatorInterface<ProductInterface> {
   validate(entity: ProductInterface): void {
     try {
       yup
@@ -25,7 +23,7 @@ export default class ProductYupValidator
           },
           {
             abortEarly: false,
-          }
+          },
         );
     } catch (errors) {
       const validationError = errors as yup.ValidationError;
